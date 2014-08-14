@@ -24,7 +24,7 @@
     var Datepicker = function (element, options) {
         this.element = $(element);
         this.autoHide = true && (options.autoHide !== false) && (this.element.data('datepicker-autohide') !== false);
-        this.format = options.format || this.element.data('datepicker-format') || moment.langData().longDateFormat('L');
+        this.format = options.format || this.element.data('datepicker-format') || moment.localeData().longDateFormat('L');
         this.calendarPlacement = options.calendarPlacement || this.element.data('datepicker-calendarplacement') || 'right';
         this.picker = $(DPGlobal.template)
 							.appendTo(options.container)
@@ -114,11 +114,11 @@
             return (this.moment && this.moment.format(format || displayFormat)) || '';
         },
         show: function (e) {
-	        
-        	if (this.isInput && this.element.is(':disabled')) { return; }
 
-        	else if (this.element.children('input').is(':disabled')) { return; }
-	        
+            if (this.isInput && this.element.is(':disabled')) { return; }
+
+            else if (this.element.children('input').is(':disabled')) { return; }
+
             this.picker.show();
             this.height = (this.component && this.component.outerHeight()) || this.element.outerHeight();
             this.place();
@@ -159,7 +159,7 @@
                 return this.hide.apply(this, arguments);
             }
         },
-        
+
         hide: function () {
             this.picker.hide();
             $(window).off('resize', this.place);
@@ -195,7 +195,7 @@
         place: function () {
             var sourceItem = this.component ? this.component : this.element;
             var offset = sourceItem.offset();
-            
+
             var zIndex = parseInt(this.element.parents().filter(function () {
                 var zIndex = $(this).css('z-index');
                 return zIndex != 'auto' && zIndex != '0';
@@ -210,7 +210,7 @@
                 this.picker.css({
                     top: offset.top + this.height,
                     left: offset.left,
-                    zIndex : zIndex
+                    zIndex: zIndex
                 });
             }
         },
@@ -251,7 +251,7 @@
         fillDow: function () {
             var dowCnt = this.weekStart;
             var html = '<tr>';
-            var daysMin = $.proxy(moment.langData().weekdaysMin, moment.langData());
+            var daysMin = $.proxy(moment.localeData().weekdaysMin, moment.localeData());
             while (dowCnt < this.weekStart + 7) {
                 html += '<th class="dow">' + daysMin(moment().day((dowCnt++) % 7)) + '</th>';
             }
@@ -262,9 +262,9 @@
         fillMonths: function () {
             var html = '';
             var i = 0
-            var monthsShort = $.proxy(moment.langData().monthsShort, moment.langData());
+            var monthsShort = $.proxy(moment.localeData().monthsShort, moment.localeData());
             while (i < 12) {
-            	html += '<span class="month">' + monthsShort(moment().startOf('month').month(i++)) + '</span>';
+                html += '<span class="month">' + monthsShort(moment().startOf('month').month(i++)) + '</span>';
             }
             this.picker.find('.datepicker-months td').append(html);
         },
@@ -278,13 +278,13 @@
             var currentMonth = currentMoment ? currentMoment.month() : null;
 
             this.picker.find('.datepicker-days th:eq(1)')
-						.text(moment.langData().months(moment().month(month)) + ' ' + year);
+						.text(moment.localeData().months(moment().month(month)) + ' ' + year);
 
             var prevMonth = moment([year, month, 0]);
             prevMonth.day(prevMonth.day() - (prevMonth.day() - this.weekStart + 7) % 7);
 
             //TODO: use diff
-            var nextMonthVal = moment(prevMonth).add('days', 42).valueOf();
+            var nextMonthVal = moment(prevMonth).add(42, 'days').valueOf();
 
             html = [];
             var clsName;
@@ -311,7 +311,7 @@
                 if (prevMonth.day() === this.weekEnd) {
                     html.push('</tr>');
                 }
-                prevMonth.add('days', 1);
+                prevMonth.add(1, 'days');
             }
             this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
 
@@ -362,7 +362,7 @@
                             case 'prev':
                             case 'next':
                                 var nav = DPGlobal.modes[this.viewMode];
-                                this.viewDate.add(nav.navFnc, nav.navStep * (target[0].className === 'prev' ? -1 : 1));
+                                this.viewDate.add(nav.navStep * (target[0].className === 'prev' ? -1 : 1), nav.navFnc);
                                 this.fill();
                                 this.refresh();
                                 break;
@@ -374,7 +374,7 @@
 
                                 var newMonth = target.parent().find('span').index(target);
                                 //this.viewDate.month(newMonth); I do not like how it works when the new month have less days
-                                this.viewDate.add('months', newMonth - this.viewDate.month());
+                                this.viewDate.add(newMonth - this.viewDate.month(), 'months');
 
                             } else {
                                 var year = parseInt(target.text(), 10) || 0;
@@ -395,9 +395,9 @@
                                 var day = parseInt(target.text(), 10) || 1;
                                 var tempDate = this.viewDate.clone();
                                 if (target.is('.old')) {
-                                    tempDate.startOf('month').add('days', -1);
+                                    tempDate.startOf('month').add(-1, 'days');
                                 } else if (target.is('.new')) {
-                                    tempDate.endOf('month').add('days', 1);
+                                    tempDate.endOf('month').add(1, 'days');
                                 }
                                 var month = tempDate.month();
                                 var year = tempDate.year();
@@ -424,7 +424,7 @@
             }
             this.picker.find('>div').hide().filter('.datepicker-' + DPGlobal.modes[this.viewMode].clsName).show();
         },
-        setCustomClasses: function() {
+        setCustomClasses: function () {
             if (this.calendarPlacement == 'left') {
                 this.picker.addClass('datepicker-left');
             }
@@ -453,7 +453,7 @@
     };
 
     $.fn.datepicker.defaults = {
-    	container : 'body'
+        container: 'body'
     };
     $.fn.datepicker.Constructor = Datepicker;
 
