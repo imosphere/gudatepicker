@@ -22,6 +22,8 @@
     // Picker object
 
     var Datepicker = function (element, options) {
+        var exports = this;
+
         this.element = $(element);
         this.autoHide = true && (options.autoHide !== false) && (this.element.data('datepicker-autohide') !== false);
         this.format = options.format || this.element.data('datepicker-format') || moment.localeData().longDateFormat('L');
@@ -38,10 +40,14 @@
         this.endDate = (endDateText) ? DPGlobal.parseDate(endDateText, this.format) : undefined;
         this.isInput = this.element.is('input');
         this.component = !this.isInput && this.element.is('.date') ? this.element.find('.add-on') : false;
+        exports.showOnClick = options.showOnClick === false ? false : true;
 
         if (this.isInput) {
             this.element.on({
-                focus: $.proxy(this.show, this),
+                focus: function(e) {
+                    if (!exports.showOnClick) return;
+                    exports.show(e);
+                },
                 blur: $.proxy(function (e) {
                     this._hide();
                     this.triggerChangeDate();
@@ -53,9 +59,12 @@
                     if (e.keyCode == 13)
                         this.updateFromValue();
                 }, this),
-                click: $.proxy(this.show, this)
+                click: function(e) {
+                    if (!exports.showOnClick) return;
+                    exports.show(e);
+                }
             });
-        } else {
+        } else if (exports.showOnClick) {
             if (this.component) {
                 this.component.on('click', $.proxy(this.show, this));
             } else {
