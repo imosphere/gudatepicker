@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title>gudatepicker - demo</title>
+		<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="datepicker.css" rel="stylesheet">
+
+	</head>
+	<body>
+		<div class="container">
+			<div class="page-header">
+				<h1>gudatepicker</h1>
+				<p class="lead">The best date picker - forked from <a href="https://github.com/MakingSense/moment-datepicker">MakingSense/moment-datepicker</a>.</p>
+			</div>
+
+			<h3>Demo</h3>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group">
+						<input type="text" class="form-control" data-bind="datepicker: date, datepickerOptions: { format: 'DD/MM/YYYY' }">
+						<span class="input-group-addon" data-bind="text: date().format('LL')"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.1/moment.min.js"></script>
+		<script src="moment-datepicker.js"></script>
+		<script src="moment-datepicker-ko.js"></script>
+		<script>
+			var viewModel = {
+				date: ko.observable(moment())
+			};
+
+			ko.applyBindings(viewModel);
+		</script>
+	</body>
+</html>
