@@ -309,3 +309,8 @@
     left: auto;
     right: 7px;
 }
+
+.datepicker .current {
+  font-weight: bold;
+  text-decoration: underline;
+}

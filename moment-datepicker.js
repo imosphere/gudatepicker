@@ -273,7 +273,9 @@
             var i = 0
             var monthsShort = $.proxy(moment.localeData().monthsShort, moment.localeData());
             while (i < 12) {
-                html += '<span class="month">' + monthsShort(moment().startOf('month').month(i++)) + '</span>';
+                var month = moment().startOf('month').month(i++);
+                var isCurrent = month.format("MM/YYYY") === moment().format("MM/YYYY");
+                html += '<span class="month ' + (isCurrent ? 'current' : '') + '">' + monthsShort(month) + '</span>';
             }
             this.picker.find('.datepicker-months td').append(html);
         },
@@ -316,7 +318,8 @@
                 if (prevMonth.valueOf() < this.startDate || prevMonth.valueOf() > this.endDate) {
                     clsName += ' disabled';
                 }
-                html.push('<td class="day' + clsName + '">' + prevMonth.date() + '</td>');
+                var isToday = moment(year + "-" + (month + 1) + "-" + prevMonth.date(), "YYYY-MM-D").format("DD/MM/YYYY") === moment().format("DD/MM/YYYY");
+                html.push('<td class="day' + (isToday ? ' current' : '') + clsName + '">' + prevMonth.date() + '</td>');
                 if (prevMonth.day() === this.weekEnd) {
                     html.push('</tr>');
                 }
@@ -351,7 +354,8 @@
 								.find('td');
             year -= 1;
             for (var i = -1; i < 11; i++) {
-                html += '<span class="year' + (i === -1 || i === 10 ? ' old' : '') + (currentYear === year ? ' active' : '') + (((this.startDate) && year < this.startDate.year()) || ((this.endDate) && year > this.endDate.year()) ? ' disabled' : '') + '">' + year + '</span>';
+                var thisYear = moment().format("YYYY");
+                html += '<span class="year' + (thisYear == year ? ' current' : '') + (i === -1 || i === 10 ? ' old' : '') + (currentYear === year ? ' active' : '') + (((this.startDate) && year < this.startDate.year()) || ((this.endDate) && year > this.endDate.year()) ? ' disabled' : '') + '">' + year + '</span>';
                 year += 1;
             }
             yearCont.html(html);
