@@ -318,7 +318,7 @@
                 if (prevMonth.valueOf() < this.startDate || prevMonth.valueOf() > this.endDate) {
                     clsName += ' disabled';
                 }
-                var isToday = moment(year + "-" + (month + 1) + "-" + prevMonth.date(), "YYYY-MM-D").format("DD/MM/YYYY") === moment().format("DD/MM/YYYY");
+                var isToday = moment(year + "-" + (prevMonth.month() + 1) + "-" + prevMonth.date(), "YYYY-MM-D").format("DD/MM/YYYY") === moment().format("DD/MM/YYYY");
                 html.push('<td class="day' + (isToday ? ' current' : '') + clsName + '">' + prevMonth.date() + '</td>');
                 if (prevMonth.day() === this.weekEnd) {
                     html.push('</tr>');
