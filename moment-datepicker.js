@@ -1,27 +1,32 @@
-/* =========================================================
- * MomentDatepicker 
- * Based on http://www.eyecon.ro/bootstrap-datepicker
- * =========================================================
- * Copyright 2012 Andres Moschini 
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ========================================================= */
+// The MIT License (MIT)
 
-!function ($, moment, undefined) {
+// Copyright (c) 2015 Glass Umbrella
+
+// Forked from MomentDatepicker by Andres Moschini http://www.eyecon.ro/bootstrap-datepicker
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+!function($, moment, undefined) {
 
     // Picker object
 
-    var Datepicker = function (element, options) {
+    var Datepicker = function(element, options) {
         var exports = this;
 
         this.element = $(element);
@@ -29,11 +34,11 @@
         this.format = options.format || this.element.data('datepicker-format') || moment.localeData().longDateFormat('L');
         this.calendarPlacement = options.calendarPlacement || this.element.data('datepicker-calendarplacement') || 'right';
         this.picker = $(DPGlobal.template)
-							.appendTo(options.container)
-							.on({
-							    click: $.proxy(this.click, this),
-							    mousedown: $.proxy(this.mousedown, this)
-							});
+                            .appendTo(options.container)
+                            .on({
+                                click: $.proxy(this.click, this),
+                                mousedown: $.proxy(this.mousedown, this)
+                            });
         var startDateText = options.startDate || this.element.data('datepicker-startdate') || undefined;
         this.startDate = (startDateText) ? DPGlobal.parseDate(startDateText, this.format) : undefined;
         var endDateText = options.endDate || this.element.data('datepicker-enddate') || undefined;
@@ -48,14 +53,14 @@
                     if (!exports.showOnClick) return;
                     exports.show(e);
                 },
-                blur: $.proxy(function (e) {
+                blur: $.proxy(function(e) {
                     this._hide();
                     this.triggerChangeDate();
                 }, this),
-                input: $.proxy(function (e) {
+                input: $.proxy(function(e) {
                     this.updateFromValue(true);
                 }, this),
-                keyup: $.proxy(function (e) {
+                keyup: $.proxy(function(e) {
                     if (e.keyCode == 13)
                         this.updateFromValue();
                 }, this),
@@ -112,17 +117,17 @@
 
     Datepicker.prototype = {
         constructor: Datepicker,
-        get: function () {
+        get: function() {
             return (this.moment && this.moment.clone());
         },
-        getAsText: function (format) {
+        getAsText: function(format) {
             var displayFormat = this.format;
             if (Object.prototype.toString.call(displayFormat) === '[object Array]') {
                 displayFormat = displayFormat[0];
             }
             return (this.moment && this.moment.format(format || displayFormat)) || '';
         },
-        show: function (e) {
+        show: function(e) {
 
             if (this.isInput && this.element.is(':disabled')) { return; }
 
@@ -144,7 +149,7 @@
             });
         },
 
-        _hide: function (e) {
+        _hide: function(e) {
             // When going from the input to the picker, IE handles the blur/click
             // events differently than other browsers, in such a way that the blur
             // event triggers a hide before the click event can stop propagation.
@@ -169,7 +174,7 @@
             }
         },
 
-        hide: function () {
+        hide: function() {
             this.picker.hide();
             $(window).off('resize', this.place);
             this.viewMode = this.startViewMode;
@@ -183,7 +188,7 @@
             });
         },
 
-        refresh: function () {
+        refresh: function() {
             var formated = this.getAsText();
 
             if (!this.isInput) {
@@ -196,16 +201,16 @@
             }
         },
 
-        set: function (newDate, ommitEvent) {
+        set: function(newDate, ommitEvent) {
             this.update(newDate, ommitEvent);
             this.refresh();
         },
 
-        place: function () {
+        place: function() {
             var sourceItem = this.component ? this.component : this.element;
             var offset = sourceItem.offset();
 
-            var zIndex = parseInt(this.element.parents().filter(function () {
+            var zIndex = parseInt(this.element.parents().filter(function() {
                 var zIndex = $(this).css('z-index');
                 return zIndex != 'auto' && zIndex != '0';
             }).first().css('z-index')) + 10;
@@ -224,7 +229,7 @@
             }
         },
         lastValue: null,
-        triggerChangeDate: function () {
+        triggerChangeDate: function() {
             var newValue = this.moment ? this.moment.valueOf() : null;
             if (newValue != this.lastValue) {
                 this.lastValue = newValue;
@@ -235,11 +240,11 @@
             if (this.autoHide)
                 this.hide();
         },
-        updateFromValue: function (ommitEvent) {
+        updateFromValue: function(ommitEvent) {
             this.update(this.isInput ? this.element.prop('value') : this.element.data('date'), ommitEvent);
         },
 
-        update: function (newDate, ommitEvent) {
+        update: function(newDate, ommitEvent) {
             var originalValue = this.moment ? this.moment.valueOf() : null;
 
             this.moment = DPGlobal.parseDate(newDate, this.format);
@@ -257,7 +262,7 @@
                 this.triggerChangeDate();
         },
 
-        fillDow: function () {
+        fillDow: function() {
             var dowCnt = this.weekStart;
             var html = '<tr>';
             var daysMin = $.proxy(moment.localeData().weekdaysMin, moment.localeData());
@@ -268,7 +273,7 @@
             this.picker.find('.datepicker-days thead').append(html);
         },
 
-        fillMonths: function () {
+        fillMonths: function() {
             var html = '';
             var i = 0
             var monthsShort = $.proxy(moment.localeData().monthsShort, moment.localeData());
@@ -280,7 +285,7 @@
             this.picker.find('.datepicker-months td').append(html);
         },
 
-        fill: function () {
+        fill: function() {
             var year = this.viewDate.year();
             var month = this.viewDate.month();
             var currentMoment = this.get();
@@ -289,9 +294,9 @@
             var currentMonth = currentMoment ? currentMoment.month() : null;
 
             this.picker.find('.datepicker-days th:eq(1)')
-						.text(moment.localeData().months(moment().month(month)) + ' ' + year);
+                        .text(moment.localeData().months(moment().month(month)) + ' ' + year);
 
-            var prevMonth = moment([year, month, 0]);
+            var prevMonth = moment([year, month, 1]).subtract(1, 'days');
             prevMonth.day(prevMonth.day() - (prevMonth.day() - this.weekStart + 7) % 7);
 
             //TODO: use diff
@@ -328,10 +333,10 @@
             this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
 
             var months = this.picker.find('.datepicker-months')
-						.find('th:eq(1)')
-							.text(year)
-							.end()
-						.find('span').removeClass('active').removeClass('disabled');
+                        .find('th:eq(1)')
+                            .text(year)
+                            .end()
+                        .find('span').removeClass('active').removeClass('disabled');
             if (currentYear === year) {
                 months.eq(currentMonth).addClass('active');
             }
@@ -348,10 +353,10 @@
             html = '';
             year = parseInt(year / 10, 10) * 10;
             var yearCont = this.picker.find('.datepicker-years')
-								.find('th:eq(1)')
-									.text(year + '-' + (year + 9))
-									.end()
-								.find('td');
+                                .find('th:eq(1)')
+                                    .text(year + '-' + (year + 9))
+                                    .end()
+                                .find('td');
             year -= 1;
             for (var i = -1; i < 11; i++) {
                 var thisYear = moment().format("YYYY");
@@ -361,7 +366,7 @@
             yearCont.html(html);
         },
 
-        click: function (e) {
+        click: function(e) {
             e.stopPropagation();
             e.preventDefault();
             var target = $(e.target).closest('span, td, th');
@@ -422,34 +427,34 @@
             }
         },
 
-        dateWithinRange: function (date) {
+        dateWithinRange: function(date) {
             return date >= this.startDate && date <= this.endDate;
         },
 
-        mousedown: function (e) {
+        mousedown: function(e) {
             e.stopPropagation();
             e.preventDefault();
         },
 
-        showMode: function (dir) {
+        showMode: function(dir) {
             if (dir) {
                 this.viewMode = Math.max(this.minViewMode, Math.min(2, this.viewMode + dir));
             }
             this.picker.find('>div').hide().filter('.datepicker-' + DPGlobal.modes[this.viewMode].clsName).show();
         },
-        setCustomClasses: function () {
+        setCustomClasses: function() {
             if (this.calendarPlacement == 'left') {
                 this.picker.addClass('datepicker-left');
             }
         }
     };
 
-    $.fn.datepicker = function (option, val) {
+    $.fn.datepicker = function(option, val) {
         var results = [];
-        var chain = this.each(function () {
+        var chain = this.each(function() {
             var $this = $(this),
-				data = $this.data('datepicker'),
-				options = typeof option === 'object' && option;
+                data = $this.data('datepicker'),
+                options = typeof option === 'object' && option;
             if (typeof option === 'string') {
                 if (data) {
                     var result = data[option](val);
@@ -472,22 +477,22 @@
 
     var DPGlobal = {
         modes: [
-			{
-			    clsName: 'days',
-			    navFnc: 'months',
-			    navStep: 1
-			},
-			{
-			    clsName: 'months',
-			    navFnc: 'years',
-			    navStep: 1
-			},
-			{
-			    clsName: 'years',
-			    navFnc: 'years',
-			    navStep: 10
-			}],
-        parseDate: function (value, format) {
+            {
+                clsName: 'days',
+                navFnc: 'months',
+                navStep: 1
+            },
+            {
+                clsName: 'months',
+                navFnc: 'years',
+                navStep: 1
+            },
+            {
+                clsName: 'years',
+                navFnc: 'years',
+                navStep: 10
+            }],
+        parseDate: function(value, format) {
             var mmnt = null;
             if (typeof value === "string") {
                 if (Object.prototype.toString.call(format) === '[object Array]') {
@@ -505,33 +510,33 @@
             return mmnt.hours(0).minutes(0).seconds(0).milliseconds(0);
         },
         headTemplate: '<thead>' +
-							'<tr>' +
-								'<th class="prev">&lsaquo;</th>' +
-								'<th colspan="5" class="switch"></th>' +
-								'<th class="next">&rsaquo;</th>' +
-							'</tr>' +
-						'</thead>',
+                            '<tr>' +
+                                '<th class="prev">&lsaquo;</th>' +
+                                '<th colspan="5" class="switch"></th>' +
+                                '<th class="next">&rsaquo;</th>' +
+                            '</tr>' +
+                        '</thead>',
         contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>'
     };
     DPGlobal.template = '<div class="datepicker dropdown-menu">' +
-							'<div class="datepicker-days">' +
-								'<table class=" table-condensed">' +
-									DPGlobal.headTemplate +
-									'<tbody></tbody>' +
-								'</table>' +
-							'</div>' +
-							'<div class="datepicker-months">' +
-								'<table class="table-condensed">' +
-									DPGlobal.headTemplate +
-									DPGlobal.contTemplate +
-								'</table>' +
-							'</div>' +
-							'<div class="datepicker-years">' +
-								'<table class="table-condensed">' +
-									DPGlobal.headTemplate +
-									DPGlobal.contTemplate +
-								'</table>' +
-							'</div>' +
-						'</div>';
+                            '<div class="datepicker-days">' +
+                                '<table class=" table-condensed">' +
+                                    DPGlobal.headTemplate +
+                                    '<tbody></tbody>' +
+                                '</table>' +
+                            '</div>' +
+                            '<div class="datepicker-months">' +
+                                '<table class="table-condensed">' +
+                                    DPGlobal.headTemplate +
+                                    DPGlobal.contTemplate +
+                                '</table>' +
+                            '</div>' +
+                            '<div class="datepicker-years">' +
+                                '<table class="table-condensed">' +
+                                    DPGlobal.headTemplate +
+                                    DPGlobal.contTemplate +
+                                '</table>' +
+                            '</div>' +
+                        '</div>';
 
-}(this.jQuery, this.moment)
+}(this.jQuery, this.moment);
