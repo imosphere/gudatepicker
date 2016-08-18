@@ -502,7 +502,7 @@
                 }
             }
             if (!mmnt || !mmnt.isValid()) {
-                mmnt = moment(value);
+                mmnt = moment(new Date(value));
             }
             if (!mmnt || !mmnt.isValid()) {
                 return null;
