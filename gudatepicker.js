@@ -283,7 +283,7 @@
             while (i < 12) {
                 var month = moment().startOf('month').month(i++);
                 var isCurrent = month.format("MM/YYYY") === moment().format("MM/YYYY");
-                html += '<span class="month ' + (isCurrent ? 'current' : '') + '">' + monthsShort(month) + '</span>';
+                html += '<span class="month ' + (isCurrent ? 'current' : '') + '" tabindex="0">' + monthsShort(month) + '</span>';
             }
             this.picker.find('.datepicker-months td').append(html);
         },
@@ -363,7 +363,7 @@
             year -= 1;
             for (var i = -1; i < 11; i++) {
                 var thisYear = moment().format("YYYY");
-                html += '<span class="year' + (thisYear == year ? ' current' : '') + (i === -1 || i === 10 ? ' old' : '') + (currentYear === year ? ' active' : '') + (((this.startDate) && year < this.startDate.year()) || ((this.endDate) && year > this.endDate.year()) ? ' disabled' : '') + '">' + year + '</span>';
+                html += '<span class="year' + (thisYear == year ? ' current' : '') + (i === -1 || i === 10 ? ' old' : '') + (currentYear === year ? ' active' : '') + (((this.startDate) && year < this.startDate.year()) || ((this.endDate) && year > this.endDate.year()) ? ' disabled' : '') + '" tabindex="0">' + year + '</span>';
                 year += 1;
             }
             yearCont.html(html);
@@ -434,7 +434,9 @@
             // If pressing Enter
             if (e.keyCode === 13) {
                 this.click(e);
-                this.element.focus();
+                if ($(':focus').hasClass('day')) {
+                    this.element.focus();
+                }
             }
 
             // If pressing ESC
@@ -458,6 +460,9 @@
                 this.viewMode = Math.max(this.minViewMode, Math.min(2, this.viewMode + dir));
             }
             this.picker.find('>div').hide().filter('.datepicker-' + DPGlobal.modes[this.viewMode].clsName).show();
+            if (this.picker.find('tbody').find('*[tabindex]:visible').length > 0) {
+                this.picker.find('tbody').find('*[tabindex]:visible')[0].focus();
+            }
         },
         setCustomClasses: function () {
             if (this.calendarPlacement == 'left') {

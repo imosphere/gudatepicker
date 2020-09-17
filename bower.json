@@ -1,9 +1,10 @@
 {
   "name": "gudatepicker",
-  "homepage": "https://github.com/GlassUmbrella/gudatepicker",
+  "homepage": "https://github.com/imosphere/gudatepicker",
   "authors": [
     "Andres Moschini",
-    "Eddie Lee"
+    "Eddie Lee",
+    "Anthony Glenn"
   ],
   "description": "gudatepicker - The best bootstrap datepicker",
   "main": "gudatepicker.js",
