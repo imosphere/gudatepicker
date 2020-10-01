@@ -423,6 +423,7 @@
                                 var month = tempDate.month();
                                 var year = tempDate.year();
                                 this.set(moment([year, month, day]));
+                                this.element.focus();
                             }
                         }
                         break;
